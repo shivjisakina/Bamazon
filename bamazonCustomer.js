@@ -13,6 +13,8 @@
 //functions:
 
 //getcolumns() to get the `ids`, `names`, and `prices`
+//promptOne() to sk user for ID of product they want to buy
+//promptTwo() to sk user how many units they want to buy
 
 
 var mysql = require("mysql");
@@ -25,13 +27,14 @@ var connection = mysql.createConnection({
     database : 'Bamazon'
 });
 
-connection.connect(function(err, response) {
+connection.connect(function(err) {
     if (err) throw err;
 
     console.log("Connected to mysql server with the ID " + connection.threadId)
 
     getcolumns()
 });
+
 
 function getcolumns() {
 
@@ -44,6 +47,48 @@ function getcolumns() {
                 "Product Name = ", "'", row.product_name, "'",
                 "Price:", "'", row.price, "'")
         });
-    })
 
+        inquirer.prompt([{
+
+            type: 'input',
+            name: "itemID",
+            message: "Please enter the item ID you would like to purchase: "
+        }, {
+            type: 'input',
+            name: "amount",
+            message: "How many would you like? "
+        }
+        ]).then(function (input) {
+
+            if (input < response.stock_quantity) {
+                console.log("you can buy this item")
+            } else {
+                console.log("This item is out of stock")
+            }
+        });
+    })
 }
+
+/*function promptOne() {
+
+    inquirer.prompt([{
+
+        type: 'input',
+        name: "itemID",
+        message: "Please enter the item ID you would like to purchase: "
+    }, {
+        type: 'input',
+        name: "amount",
+        message: "How many would you like? "
+    }
+    ]).then(function (answers) {
+
+        if (answers.input > inquirer.stock_quantity) {
+            console.log("you can buy this item")
+        } else {
+            console.log("This item is out of stock")
+        }
+    });
+
+}*/
+
