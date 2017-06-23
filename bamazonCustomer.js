@@ -32,63 +32,80 @@ connection.connect(function(err) {
 
     console.log("Connected to mysql server with the ID " + connection.threadId)
 
-    getcolumns()
+    getStarted()
 });
 
 
-function getcolumns() {
+function getStarted() {
 
-    connection.query("SELECT * FROM `customerView`" , function (queryError, response){
-        if (queryError)
-            throw queryError;
-
-        response.forEach(function (row) {
-            console.log("id = ", "'", row.id, "'",
-                "Product Name = ", "'", row.product_name, "'",
-                "Price:", "'", row.price, "'")
-        });
-
-        inquirer.prompt([{
-
-            type: 'input',
-            name: "itemID",
-            message: "Please enter the item ID you would like to purchase: "
-        }, {
-            type: 'input',
-            name: "amount",
-            message: "How many would you like? "
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Would you like to buy ____ Merchendise?",
+            name: "confirm",
+            default: true
         }
-        ]).then(function (input) {
-
-            if (input < response.stock_quantity) {
-                console.log("you can buy this item")
-            } else {
-                console.log("This item is out of stock")
-            }
-        });
-    })
-}
-
-/*function promptOne() {
-
-    inquirer.prompt([{
-
-        type: 'input',
-        name: "itemID",
-        message: "Please enter the item ID you would like to purchase: "
-    }, {
-        type: 'input',
-        name: "amount",
-        message: "How many would you like? "
-    }
     ]).then(function (answers) {
-
-        if (answers.input > inquirer.stock_quantity) {
-            console.log("you can buy this item")
+        if (answers.confirm) {
+            chooseProduct();
         } else {
-            console.log("This item is out of stock")
+            console.log("Okay, see you next time")
         }
     });
+}
 
-}*/
 
+function chooseProduct() {
+    connection.query("SELECT * FROM `customerView`", function(err, results) {
+        if (err) throw err;
+
+        inquirer.prompt([
+            {
+                type: "rawlist",
+                message: "Please choose the product you would like to buy:",
+                name: "choice",
+                choices: function() {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                        choiceArray.push(results[i].product_name + " " + results[i].price + "$");
+                    }
+                    return choiceArray;
+                }
+            },
+            {
+                type: "input",
+                message: "How many would you like?",
+                name: "quantity"
+            }
+        ]).then(function(answer){
+            var chosenItem;
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].product_name === answer.choice){
+                    chosenItem = results[i];
+                }
+            }
+
+            if (results.stock_quantity < parseInt(answer.quantity)) {
+                connection.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: answer.quantity
+                        },
+                        {
+                            id: chosenItem.id
+                        }
+                    ],
+                    function(error) {
+                        if (error) throw err;
+                        console.log("Order successful!");
+                        start();
+                    }
+                );
+            } else {
+                console.log("Sorry, item is out of stock...");
+                getStarted();
+            }
+        });
+    });
+}
