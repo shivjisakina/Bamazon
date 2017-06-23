@@ -41,26 +41,29 @@ function list() {
     }
     ]).then(function (input) {
 
+        switch(input.list) {
 
-        if (input.list[0]) {
-            viewProducts()
-        }
+            case "View Products for Sale":
+                viewProducts();
+                break;
 
-        else if (input.list[1]) {
-            lowInventory()
-        }
+            case "View Low Inventory":
+                lowInventory()
+                break;
 
-        else if (input.list[2]) {
-            addInventory()
-        }
+            case "Add to Inventory":
+                addInventory()
+                break;
 
-        else if (input.list[3]) {
-            addProduct()
+            case "Add New Product":
+                addProduct();
+                break;
         }
     });
 }
 
 function viewProducts() {
+
     console.log("--View Products--");
     connection.query("SELECT * FROM `customerView`" , function (queryError, response){
 
@@ -77,7 +80,10 @@ function viewProducts() {
 } // viewProducts()
 
 function lowInventory() {
+
     console.log("--List items with quantity < 5--")
+
+
 }
 
 function addInventory() {
