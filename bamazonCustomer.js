@@ -56,7 +56,7 @@ function getStarted() {
 
 
 function chooseProduct() {
-    connection.query("SELECT * FROM `customerView`", function(err, results) {
+    connection.query("SELECT * FROM `products`", function(err, results) {
         if (err) throw err;
 
         inquirer.prompt([

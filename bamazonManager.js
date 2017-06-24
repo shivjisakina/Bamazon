@@ -31,6 +31,10 @@ connection.connect(function(err) {
 
 });
 
+function menu() {
+
+}
+
 function list() {
 
     inquirer.prompt([{
@@ -67,7 +71,7 @@ function list() {
 function viewProducts() {
 
     console.log("--View Products--");
-    connection.query("SELECT * FROM `customerView`" , function (queryError, response){
+    connection.query("SELECT * FROM `products`" , function (queryError, response){
 
         if (queryError)
             throw queryError;
@@ -83,7 +87,7 @@ function viewProducts() {
 
 function lowInventory() {
 
-    connection.query("SELECT `product_name`, `stock_quantity` FROM `customerView` WHERE `stock_quantity`< 5 ORDER BY `stock_quantity` DESC;", function(err, results) {
+    connection.query("SELECT `product_name`, `stock_quantity` FROM `products` WHERE `stock_quantity`< 5 ORDER BY `stock_quantity` DESC;", function(err, results) {
         if (err)
             throw err;
 
@@ -94,7 +98,7 @@ function lowInventory() {
 function addInventory() {
     console.log("--Prompt to add more of any item in store--")
 
-    connection.query("SELECT * FROM `customerView`", function (err, results) {
+    connection.query("SELECT * FROM `products`", function (err, results) {
         if (err)
             throw err;
 
@@ -114,7 +118,7 @@ function addInventory() {
             results.stock_quantity++
             //console.log("you added another " + results.product_name)
 
-        })
+        }) // function (answer)
     })
 }
 
@@ -170,7 +174,7 @@ function addProduct() {
         var stock_quantity = product.stock_quantity;
         var autographed = product.autographed;
 
-        connection.query("INSERT INTO `customerView` (`item_id`, `product_name`, `department_name`, `price`, `stock_quantity`, `autographed`) VALUES (?, ?, ?, ?, ?, ?)", [item_id, product_name, department_name, price, stock_quantity, autographed], function(err, data) {
+        connection.query("INSERT INTO `products` (`item_id`, `product_name`, `department_name`, `price`, `stock_quantity`, `autographed`) VALUES (?, ?, ?, ?, ?, ?)", [item_id, product_name, department_name, price, stock_quantity, autographed], function(err, data) {
 
             if (err) {
                 throw err
