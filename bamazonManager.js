@@ -22,6 +22,7 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
+
     if (err) throw err;
 
     console.log("Connected to mysql server with the ID " + connection.threadId)
@@ -31,6 +32,7 @@ connection.connect(function(err) {
 });
 
 function list() {
+
     inquirer.prompt([{
 
         name: "list",
@@ -81,13 +83,39 @@ function viewProducts() {
 
 function lowInventory() {
 
-    console.log("--List items with quantity < 5--")
+    connection.query("SELECT `product_name`, `stock_quantity` FROM `customerView` WHERE `stock_quantity`< 5 ORDER BY `stock_quantity` DESC;", function(err, results) {
+        if (err)
+            throw err;
 
-
+        console.log(results)
+    })
 }
 
 function addInventory() {
     console.log("--Prompt to add more of any item in store--")
+
+    connection.query("SELECT * FROM `customerView`", function (err, results) {
+        if (err)
+            throw err;
+
+        inquirer.prompt([{
+            type: 'rawlist',
+            name: "addProduct",
+            message: "Add more of any product that is currently in the store",
+            choices: function () {
+                var choiceArray = [];
+                for (var i = 0; i < results.length; i++) {
+                    choiceArray.push(results[i].product_name + " " + "$ " + results[i].price );
+                }
+                return choiceArray;
+            }
+        }]).then(function (answer) {
+
+            results.stock_quantity++
+            //console.log("you added another " + results.product_name)
+
+        })
+    })
 }
 
 function addProduct() {
