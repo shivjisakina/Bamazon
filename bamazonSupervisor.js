@@ -2,10 +2,12 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
+
     host     : 'localhost',
     user     : 'root',
     password : '',
     database : 'Bamazon'
+
 });
 
 connection.connect(function(err) {
@@ -28,6 +30,7 @@ function menu() {
         choices: ["View Product Sales by Department", "Create New Department"]
 
     }
+
     ]).then(function (input) {
 
         switch(input.menu) {
@@ -48,15 +51,16 @@ function menu() {
 
                 console.log("Please choose from one of the 2 options!")
 
-        }
-    });
+        } // switch function
 
-}
+    }); // .then funcition
+
+} // menu()
 
 function salesDepartment() {
 
-}
+} // salesDepartment
 
 function newDepartment() {
 
-}
+} // newDepartment

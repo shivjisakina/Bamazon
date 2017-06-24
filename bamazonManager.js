@@ -15,10 +15,12 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
+
     host     : 'localhost',
     user     : 'root',
     password : '',
     database : 'Bamazon'
+
 });
 
 connection.connect(function(err) {
@@ -33,7 +35,7 @@ connection.connect(function(err) {
 
 function menu() {
 
-}
+} // menu()
 
 function list() {
 
@@ -45,58 +47,78 @@ function list() {
         choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
 
     }
+
     ]).then(function (input) {
 
         switch(input.list) {
 
             case "View Products for Sale":
+
                 viewProducts();
+
                 break;
 
             case "View Low Inventory":
-                lowInventory()
+
+                lowInventory();
+
                 break;
 
             case "Add to Inventory":
-                addInventory()
+
+                addInventory();
+
                 break;
 
             case "Add New Product":
+
                 addProduct();
+
                 break;
-        }
-    });
-}
+
+        } // switch function
+
+    }); // .then function
+
+} // list()
 
 function viewProducts() {
 
     console.log("--View Products--");
+
     connection.query("SELECT * FROM `products`" , function (queryError, response){
 
         if (queryError)
             throw queryError;
 
         response.forEach(function (row) {
+
             console.log("id = ", "'", row.id, "'",
                 "Product Name = ", "'", row.product_name, "'",
                 "Price:", "'", row.price, "'",
                 "Quantity", "'", row.stock_quantity, "'")
+
         }); // response.forEach
+
     }) // connection.query
+
 } // viewProducts()
 
 function lowInventory() {
 
     connection.query("SELECT `product_name`, `stock_quantity` FROM `products` WHERE `stock_quantity`< 5 ORDER BY `stock_quantity` DESC;", function(err, results) {
+
         if (err)
             throw err;
 
         console.log(results)
-    })
-}
+
+    }); // connection.query
+} // lowInventory()
 
 function addInventory() {
-    console.log("--Prompt to add more of any item in store--")
+
+    console.log("--Prompt to add more of any item in store--");
 
     connection.query("SELECT * FROM `products`", function (err, results) {
         if (err)
@@ -119,11 +141,14 @@ function addInventory() {
             //console.log("you added another " + results.product_name)
 
         }) // function (answer)
-    })
-}
+
+    }); // connection.query
+
+} // addInventory
 
 function addProduct() {
-    console.log("--Input to add new product to store--")
+
+    console.log("--Input to add new product to store--");
 
     inquirer.prompt([{
 
