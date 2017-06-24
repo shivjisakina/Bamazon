@@ -120,4 +120,66 @@ function addInventory() {
 
 function addProduct() {
     console.log("--Input to add new product to store--")
-}
+
+    inquirer.prompt([{
+
+        type: "confirm",
+        name: "question",
+        message: "Would you like to add a new product?"
+
+    }, {
+
+        type: "input",
+        name: "item_id",
+        message: "Add the items id:"
+
+    }, {
+
+        type: "input",
+        name: "product_name",
+        message: "Add the product name:"
+
+    }, {
+
+        type: "input",
+        name: "department_name",
+        message: "Add the department:"
+
+    }, {
+        type: "input",
+        name: "price",
+        message: "Add a price:"
+
+    }, {
+        type: "input",
+        name: "stock_quantity",
+        message: "Add the stock quantity"
+
+    }, {
+
+        type: "input",
+        name: "autographed",
+        message: "Is it autographed? (0/1)"
+
+    }]).then(function (product) {
+
+        var item_id = product.item_id;
+        var product_name = product.product_name;
+        var department_name = product.department_name;
+        var price = product.price;
+        var stock_quantity = product.stock_quantity;
+        var autographed = product.autographed;
+
+        connection.query("INSERT INTO `customerView` (`item_id`, `product_name`, `department_name`, `price`, `stock_quantity`, `autographed`) VALUES (?, ?, ?, ?, ?, ?)", [item_id, product_name, department_name, price, stock_quantity, autographed], function(err, data) {
+
+            if (err) {
+                throw err
+            }
+
+            console.log("Your product " + product_name + " has been added!")
+
+        }); //connection.query
+
+    }); // .then function
+
+} //addProduct()
