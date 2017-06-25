@@ -1,5 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require('cli-table');
+
+
 
 var connection = mysql.createConnection({
 
@@ -12,7 +15,8 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
 
-    if (err) throw err;
+    if (err)
+        throw err;
 
     console.log("Connected to mysql server with the ID " + connection.threadId)
 
@@ -36,6 +40,7 @@ function menu() {
         switch(input.menu) {
 
             case "View Products Sales by Department":
+            case "1":
 
                 salesDepartment();
 
@@ -46,18 +51,28 @@ function menu() {
                 newDepartment();
 
                 break;
-
-            default:
-
-                console.log("Please choose from one of the 2 options!")
-
         } // switch function
 
-    }); // .then funcition
+    }); // .then function
 
 } // menu()
 
 function salesDepartment() {
+
+    var table = new Table({
+        chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
+            , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
+            , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+            , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
+    });
+
+
+    table.push(
+        ['foo', 'bar', 'baz']
+        , ['frob', 'bar', 'quuz']
+    );
+
+    console.log(table.toString());
 
 } // salesDepartment
 

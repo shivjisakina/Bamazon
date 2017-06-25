@@ -205,10 +205,11 @@ function addProduct() {
                 throw err
             }
 
-            console.log("Your product " + product_name + " has been added!")
+            console.log("Your product " + "'" + product_name + "'" + " has been added!")
 
         }); //connection.query
 
     }); // .then function
 
 } //addProduct()
+

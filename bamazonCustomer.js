@@ -43,6 +43,7 @@ connection.connect(function(err) {
 function getStarted() {
 
     inquirer.prompt([
+
         {
             type: "confirm",
             message: "Would you like to buy ____ Merchendise?",
