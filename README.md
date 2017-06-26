@@ -6,9 +6,9 @@
 
 In this activity, I created a storefront for ____ themed merchandise with the MySQL skills I learned this week. The app will take in orders from customers and deplete stock from the store's inventory. 
 
-```
+
 * [Watch the video](https://www.youtube.com/watch?v=K2jU4i69LlY)
-```
+
 
 ### Here's the lucid chart I used to help myself throughout the development process:
 ![lucidchart](https://github.com/shivjisakina/Bamazon/blob/master/assets/images/bamazon.png)
