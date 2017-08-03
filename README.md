@@ -4,7 +4,7 @@
 
 ### This was a project for week 7 of the UCF Coding Bootcamp
 
-In this activity, I created a storefront for merchandise with the MySQL skills I learned this week. The app will take in orders from customers and deplete stock from the store's inventory. 
+In this activity, I created a storefront for merchandise with the MySQL skills I learned so far. The app will take in orders from customers and deplete stock from the store's inventory. 
 
 
 * [Watch the video](https://www.youtube.com/watch?v=K2jU4i69LlY)
